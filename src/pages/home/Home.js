@@ -29,13 +29,13 @@ const Contract = () => {
                 <span>Your Beans</span>
                 <span>{walletDetail['beans']}</span>
             </div>
-            {/* <div className="contract-card-info contract-card-info-input">
+            <div className="contract-card-info contract-card-info-input">
                 <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
                 <span>BNB</span>
             </div>
             <div className="contract-card-info">
                 <button disabled={!value} onClick={() => { }} >Bake Beans</button>
-            </div> */}
+            </div>
             <div className="contract-card-saprator" >
             </div>
             <div className="contract-card-footer">
