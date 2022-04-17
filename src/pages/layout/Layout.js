@@ -6,7 +6,7 @@ const LayoutContainer = (props) => {
     return (
         <div className="layout-wrapper">
             <div className="header-wrapper">
-                <Header />
+                <Header account={props.account} setAccount={props.setAccount} contractAbi={props.contractAbi} contractAddress={props.contractAddress} />
             </div>
             <div className="body-wrapper">
                 {props.children}
@@ -16,3 +16,4 @@ const LayoutContainer = (props) => {
 };
 
 export default LayoutContainer;
+ 

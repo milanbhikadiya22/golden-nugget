@@ -1,8 +1,9 @@
 import "./home.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import twitter from "../../assets/twitter.png";
 import telegram from "../../assets/telegram.png";
 import LayoutContainer from "../layout/Layout";
+import { ethers } from "ethers";
 
 const Contract = () => {
 
@@ -76,12 +77,45 @@ const AnimationComponent = ({ index }) => {
     </div>
 };
 
-const Home = () => {
+const Home = ({contractAbi,contractAddress,account,setAccount}) => {
 
     const [animation, setAnimation] = useState([0, 1, 2, 3, 4, 5]);
+    const [value, setValue] = useState(0);
+
+    const getDetails = async () => {
+        // const { ethereum } = window;
+        // if(ethereum){
+        //     const provider = new ethers.providers.Web3Provider(ethereum);
+        //     const signer = provider.getSigner();
+        //     const contract = new ethers.Contract(contractAddress,contractAbi,signer);
+        //     const balance = await contract.getBalance(contractAddress);
+        //     // const balanceUser = await contract.getBalance(account);
+        //     console.log(balance,'test');
+        // }
+        // let web3 = new Web3(window.web3.currentProvider);
+        // const accounts = await ethereum.enable();
+
+        // const contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+        // const contractBalance = await web3.eth.getBalance(contractAddress) // contractbalance 10**18
+        // const balance = await web3.eth.getBalance(accounts[0]) // contractbalance 10**18
+
+        // console.log(contractBalance,balance);
+    };
+
+    useEffect(()=>{
+        console.log(account);
+        if(account){
+            getDetails();
+        }
+    },[account]);
+
+    const onHireMiners = () => {
+
+    };
 
     return (
-        <LayoutContainer>
+        <LayoutContainer account={account} setAccount={setAccount} contractAbi={contractAbi} contractAddress={contractAddress}>
             <div className="home-container">
                 {/* {animation.map((a,index)=><AnimationComponent key={index} index={index} />)} */}
                 <div className="home-container-row">
@@ -89,11 +123,14 @@ const Home = () => {
                     <div className="other-info-column" >
                         <div className="other-info-input-block">
                             <div className="contract-card-info-input">
-                                <input type="text" />
+                                <input type="text" value={value} onChange={(e)=>{
+                                    if(!e.target.value || e.target.value.match(/^[0-9\s]+$/))
+                                    setValue(e.target.value);
+                                }} />
                                 <span>BNB</span>
                             </div>
                             <div className="contract-card-info">
-                                <button disabled={true} onClick={() => { }} >Hire Miners</button>
+                                <button disabled={!value} onClick={() => onHireMiners()} >Hire Miners</button>
                             </div>
                         </div>
                         <OtherInfo></OtherInfo>
