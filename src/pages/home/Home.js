@@ -34,8 +34,8 @@ const Contract = () => {
                 <span>0 BNB</span>
             </div>
             <div className="contract-card-footer">
-                <button disabled={!value} >Re-bake</button>
-                <button disabled={!value}>Eat Beans</button>
+                <button disabled={!value} >Bury Gold</button>
+                <button disabled={!value}>Sell Gold</button>
             </div>
         </div>
     </div>
@@ -93,7 +93,7 @@ const Home = () => {
                                 <span>BNB</span>
                             </div>
                             <div className="contract-card-info">
-                                <button disabled={true} onClick={() => { }} >Bake Beans</button>
+                                <button disabled={true} onClick={() => { }} >Hire Miners</button>
                             </div>
                         </div>
                         <OtherInfo></OtherInfo>
