@@ -77,20 +77,27 @@ const AnimationComponent = ({ index }) => {
     </div>
 };
 
-const Home = ({contractAbi,contractAddress,account,setAccount}) => {
+const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
 
     const [animation, setAnimation] = useState([0, 1, 2, 3, 4, 5]);
     const [value, setValue] = useState(0);
 
     const getDetails = async () => {
-        // const { ethereum } = window;
-        // if(ethereum){
+        const { ethereum } = window;
+        // if (ethereum) {
         //     const provider = new ethers.providers.Web3Provider(ethereum);
         //     const signer = provider.getSigner();
-        //     const contract = new ethers.Contract(contractAddress,contractAbi,signer);
-        //     const balance = await contract.getBalance(contractAddress);
+        //     const contract = new ethers.Contract(contractAddress, contractAbi, provider);
+        //     console.log(contract);
+        //     const balance = await contract.getBalance();
+        //     console.log(balance / 10 ** 18, 'balance');
+        //     const myGold = await contract.getMyMiners(account) // your berans/gold
+        //     console.log(myGold / 10 ** 18);
+        //     const myRewards = await contract.NuggetRewards(account) // your berans/gold
+        //     console.log(myRewards / 10 ** 18); // if error then show 0
+
+
         //     // const balanceUser = await contract.getBalance(account);
-        //     console.log(balance,'test');
         // }
         // let web3 = new Web3(window.web3.currentProvider);
         // const accounts = await ethereum.enable();
@@ -103,12 +110,12 @@ const Home = ({contractAbi,contractAddress,account,setAccount}) => {
         // console.log(contractBalance,balance);
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(account);
-        if(account){
+        if (account) {
             getDetails();
         }
-    },[account]);
+    }, [account]);
 
     const onHireMiners = () => {
 
@@ -123,9 +130,9 @@ const Home = ({contractAbi,contractAddress,account,setAccount}) => {
                     <div className="other-info-column" >
                         <div className="other-info-input-block">
                             <div className="contract-card-info-input">
-                                <input type="text" value={value} onChange={(e)=>{
-                                    if(!e.target.value || e.target.value.match(/^[0-9\s]+$/))
-                                    setValue(e.target.value);
+                                <input type="text" value={value} onChange={(e) => {
+                                    if (!e.target.value || e.target.value.match(/^[0-9\s]+$/))
+                                        setValue(e.target.value);
                                 }} />
                                 <span>BNB</span>
                             </div>
