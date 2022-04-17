@@ -29,15 +29,6 @@ const Contract = () => {
                 <span>Your Beans</span>
                 <span>{walletDetail['beans']}</span>
             </div>
-            <div className="contract-card-info contract-card-info-input">
-                <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
-                <span>BNB</span>
-            </div>
-            <div className="contract-card-info">
-                <button disabled={!value} onClick={() => { }} >Bake Beans</button>
-            </div>
-            <div className="contract-card-saprator" >
-            </div>
             <div className="contract-card-footer">
                 <span>Your Rewards</span>
                 <span>0 BNB</span>
@@ -76,20 +67,10 @@ const OtherInfo = () => {
                 <span>{nutritionDetail['devFee']}</span>
             </div>
         </div>
-        <div className="refferal-card">
-            <div className="refferal-card-info refferal-header">
-                <span>Refferal Link</span>
-            </div>
-            <div className="refferal-card-info">
-                <input />
-            </div><div className="refferal-card-info">
-                <p>Earn 12% of the BNB used to bake beans from anyone who uses your referral link</p>
-            </div>
-        </div>
     </div>
 };
 
-const AnimationComponent = ({index}) => {
+const AnimationComponent = ({ index }) => {
     return <div className="animation-component">
 
     </div>
@@ -97,14 +78,37 @@ const AnimationComponent = ({index}) => {
 
 const Home = () => {
 
-    const [animation,setAnimation] = useState([0,1,2,3,4,5]);
+    const [animation, setAnimation] = useState([0, 1, 2, 3, 4, 5]);
 
     return (
         <LayoutContainer>
             <div className="home-container">
                 {/* {animation.map((a,index)=><AnimationComponent key={index} index={index} />)} */}
-                <Contract></Contract>
-                <OtherInfo></OtherInfo>
+                <div className="home-container-row">
+                    <Contract></Contract>
+                    <div className="other-info-column" >
+                        <div className="other-info-input-block">
+                            <div className="contract-card-info-input">
+                                <input type="text" />
+                                <span>BNB</span>
+                            </div>
+                            <div className="contract-card-info">
+                                <button disabled={true} onClick={() => { }} >Bake Beans</button>
+                            </div>
+                        </div>
+                        <OtherInfo></OtherInfo>
+                    </div>
+                </div>
+                <div className="refferal-card">
+                    <div className="refferal-card-info refferal-header">
+                        <span>Refferal Link</span>
+                    </div>
+                    <div className="refferal-card-info">
+                        <input />
+                    </div><div className="refferal-card-info">
+                        <p>Earn 12% of the BNB used to bake beans from anyone who uses your referral link</p>
+                    </div>
+                </div>
                 <img className="telegram" src={telegram} alt="telegram" />
                 <img className="twitter" src={twitter} alt="twitter" />
             </div>

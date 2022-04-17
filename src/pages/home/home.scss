@@ -3,165 +3,133 @@
     overflow-y: auto;
     background-color: var(--primary);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding-top: 30px;
     position: relative;
+    .home-container-row{
+        display: flex;
+        .other-info-column{
+            padding: 20px 0px;
+            .other-info-input-block{
+                display: flex;
+                padding: 0px 20px;
+                margin-bottom: 20px;
+                .contract-card-info-input{
+                    position: relative;
+                    display: flex;
+                    width: calc(100% - 110px);
+                    margin-right: 10px;
+                    input{
+                        height: 45px;
+                        width: calc(100%);
+                        background-color: transparent;
+                        border: 1px var(--border-color) solid;
+                        border-radius: 8px;
+                        padding: 8px 60px 8px 10px;
+                        color: var(--primary-text-color);
+                        text-align: right;
+                    }
+                    span{
+                        color: var(--primary-text-color);
+                        position: absolute;
+                        right: 15px;
+                        top: 10px;
+                    }
+                }
+                .contract-card-info{
+                    width: 100px;
+                    button{
+                        height: 45px;
+                        width: 100%;
+                        background-color: var(--secondary);
+                        border-radius: 8px;
+                        color: var(--secondary-text-color);
+                        border: none;
+                        outline: none;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+        }
+    }
     .contract-container{
         height: 100%;
         width: 400px;
         padding: 20px;
         max-width: calc(100% - 20px);
-        .contract-card{
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 2px 2px 8px 0px var(--secondary);
-            .contract-card-info{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                font-size: 18px;
-                margin-bottom: 20px;
-                span{
-                    color: var(--primary-text-color);
-                    font-weight: 500;
-                }
-                button{
-                    height: 45px;
-                    width: 100%;
-                    background-color: var(--secondary);
-                    border-radius: 8px;
-                    color: var(--secondary-text-color);
-                    border: none;
-                    outline: none;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                }
-                button:disabled{
-                    opacity: 0.5;
-                }
-            }
-            .contract-card-info-input{
-                position: relative;
-                margin-bottom: 30px;
-                input{
-                    height: 40px;
-                    width: 100%;
-                    background-color: transparent;
-                    border: 1px var(--border-color) solid;
-                    border-radius: 8px;
-                    padding: 8px 60px 8px 10px;
-                    color: var(--primary-text-color);
-                    text-align: right;
-                }
-                span{
-                    position: absolute;
-                    right: 15px;
-                    top: 5px;
-                }
-            }
-            .contract-card-saprator{
-                height: 1px;
-                width: 100%;
-                border-bottom: 1px solid var(--border-color);
-            }
-            .contract-card-footer{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 15px;
-                margin-top: 15px;
-                span{
-                    font-size: 24px;
-                    color: var(--primary-text-color);
-                }
-                button{
-                    height: 45px;
-                    width: calc(50% - 10px);
-                    background-color: var(--secondary);
-                    border-radius: 8px;
-                    color: var(--secondary-text-color);
-                    border: none;
-                    outline: none;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                }
-                button:disabled{
-                    opacity: 0.5;
-                }
-            }
-        }
     }
     .right-card-container{
         height: 100%;
         width: 400px;
         padding: 20px;
-        max-width: calc(100% - 20px);
-        .nutrition-card{
+    }
+    .nutrition-card{
+        margin-bottom: 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 15px 20px 20px 20px;
+        box-shadow: 2px 2px 8px 0px var(--secondary);
+        .nutrition-card-info{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px 20px 20px 20px;
-            box-shadow: 2px 2px 8px 0px var(--secondary);
-            .nutrition-card-info{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                font-size: 18px;
-                margin-bottom: 20px;
-                span{
-                    color: var(--primary-text-color);
-                    font-weight: 500;
-                }
-            }
-            .nutrition-header{
-                justify-content: center;
-                span{
-                    border-bottom: 2px solid var(--secondary);
-                }
+            span{
+                color: var(--primary-text-color);
+                font-weight: 500;
             }
         }
-        .refferal-card{
+        .nutrition-header{
+            justify-content: center;
+            span{
+                border-bottom: 2px solid var(--secondary);
+            }
+        }
+    }
+    .refferal-card{
+        width: 760px;
+        margin-bottom: 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 15px 20px 20px 20px;
+        box-shadow: 2px 2px 8px 0px var(--secondary);
+        .refferal-card-info{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px 20px 20px 20px;
-            box-shadow: 2px 2px 8px 0px var(--secondary);
-            .refferal-card-info{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                font-size: 18px;
-                margin-bottom: 20px;
-                span{
-                    color: var(--primary-text-color);
-                    font-weight: 500;
-                }
-                input{
-                    height: 40px;
-                    width: 100%;
-                    background-color: transparent;
-                    border: 1px var(--border-color) solid;
-                    border-radius: 8px;
-                    padding: 8px 60px 8px 10px;
-                    color: var(--primary-text-color);
-                    text-align: right;
-                }
-                p{
-                    font-size: 14px;
-                    margin-bottom: 0px !important;
-                    color: var(--primary-text-color);
-                }
+            span{
+                color: var(--primary-text-color);
+                font-weight: 500;
             }
-            .refferal-card-info:last-child {
+            input{
+                height: 40px;
+                width: 100%;
+                background-color: transparent;
+                border: 1px var(--border-color) solid;
+                border-radius: 8px;
+                padding: 8px 60px 8px 10px;
+                color: var(--primary-text-color);
+                text-align: right;
+            }
+            p{
+                font-size: 14px;
                 margin-bottom: 0px !important;
+                color: var(--primary-text-color);
             }
-            .refferal-header{
-                justify-content: center;
-                span{
-                    border-bottom: 2px solid var(--secondary);
-                }
+        }
+        .refferal-card-info:last-child {
+            margin-bottom: 0px !important;
+        }
+        .refferal-header{
+            justify-content: center;
+            span{
+                border-bottom: 2px solid var(--secondary);
             }
         }
     }
@@ -218,5 +186,67 @@
         width: 40px;
         bottom: 40px;
         right: 20px;
+    }
+}
+
+.contract-card{
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 2px 2px 8px 0px var(--secondary);    
+    .contract-card-info{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 18px;
+        margin-bottom: 20px;
+        span{
+            color: var(--primary-text-color);
+            font-weight: 500;
+        }
+        button{
+            height: 45px;
+            width: 100%;
+            background-color: var(--secondary);
+            border-radius: 8px;
+            color: var(--secondary-text-color);
+            border: none;
+            outline: none;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        button:disabled{
+            opacity: 0.5;
+        }
+    }
+    .contract-card-saprator{
+        height: 1px;
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .contract-card-footer{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        margin-top: 15px;
+        span{
+            font-size: 24px;
+            color: var(--primary-text-color);
+        }
+        button{
+            height: 45px;
+            width: calc(50% - 10px);
+            background-color: var(--secondary);
+            border-radius: 8px;
+            color: var(--secondary-text-color);
+            border: none;
+            outline: none;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        button:disabled{
+            opacity: 0.5;
+        }
     }
 }
