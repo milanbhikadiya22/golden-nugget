@@ -4,8 +4,8 @@ import twitter from "../../assets/twitter.png";
 import telegram from "../../assets/telegram.png";
 import LayoutContainer from "../layout/Layout";
 import { ethers } from "ethers";
-import { Web3 } from 'web3'
-const Contract = () => {
+
+const Contract = ({userBalance,contractBalance}) => {
 
     const [walletDetail, setWalletDetail] = useState({
         contract: 0,
@@ -20,11 +20,11 @@ const Contract = () => {
         <div className="contract-card">
             <div className="contract-card-info">
                 <span>Contract</span>
-                <span>{walletDetail['contract']}</span>
+                <span>{contractBalance}</span>
             </div>
             <div className="contract-card-info">
                 <span>Wallet</span>
-                <span>{walletDetail['wallet']}</span>
+                <span>{userBalance}</span>
             </div>
             <div className="contract-card-info">
                 <span>Your Beans</span>
@@ -81,6 +81,8 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
 
     const [animation, setAnimation] = useState([0, 1, 2, 3, 4, 5]);
     const [value, setValue] = useState(0);
+    const [contractBalance,setContractBalance] = useState(0);
+    const [userBalance,setUserBalance] = useState(0);
 
     const getDetails = async () => {
         const { ethereum } = window;
@@ -95,16 +97,16 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
             }).then((balance) => {
                 console.log(balance / 10 ** 18); // meta mask ballence
             })
-            console.log(provider);
+            console.log(provider,'provider');
             const contract = new ethers.Contract(contractAddress, contractAbi, provider);
-            console.log(contract);
+            console.log(contract,'contract');
             const balance = await contract.getBalance();
-            console.log(balance / 10 ** 18, 'balance');
+            setContractBalance(balance / 10 ** 18);
             const myGold = await contract.getMyMiners(account) // your berans/gold
-            console.log(myGold / 10 ** 18);
+            setUserBalance(myGold / 10 ** 18);
             // const myRewards = await contract.NuggetRewards(account) // your berans/gold
             // console.log(myRewards / 10 ** 18); // if error then show 0
-            console.log(ethers);
+            console.log(ethers,'ether');
             // const amount = ethers.utils().Web3.utils.toWei("0.01", "ether")
             // await contract.methods.buyGold(account).send({ from: account, value: amount }) // buyGOld
             // console.log(amount);
@@ -121,10 +123,28 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
         // console.log(contractBalance, balance);
     };
 
+    const getDetailsByWeb3 =async () => {
+        let web3 = new window.Web3(window.web3.currentProvider);
+        const accounts = await window.ethereum.enable();
+
+        const contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+        const contractbalance = await web3.eth.getBalance(contractAddress) // contractbalance 10**18
+
+        const userBalance = await web3.eth.getBalance(accounts[0]) // userbalance
+
+        const myGold = await contract.methods.getMyMiners("0xb12d34ec804bf0d8872e42b924ca61a449a0f572").call() // your berans/gold
+
+        const myRewards = await contract.methods.NuggetRewards("0xb12d34ec804bf0d8872e42b924ca61a449a0f572").call() // your berans/gold rewards
+
+        console.log(contractbalance/10**18,userBalance,myGold,myRewards);
+    };
+
     useEffect(() => {
-        console.log(account);
         if (account) {
             getDetails();
+            if(window.web3 && window.ethereum)
+            getDetailsByWeb3();
         }
     }, [account]);
 
@@ -137,7 +157,7 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
             <div className="home-container">
                 {/* {animation.map((a,index)=><AnimationComponent key={index} index={index} />)} */}
                 <div className="home-container-row">
-                    <Contract></Contract>
+                    <Contract contractBalance={contractBalance} userBalance={userBalance}></Contract>
                     <div className="other-info-column" >
                         <div className="other-info-input-block">
                             <div className="contract-card-info-input">
