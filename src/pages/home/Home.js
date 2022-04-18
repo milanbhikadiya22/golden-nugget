@@ -3,16 +3,8 @@ import React, { useEffect, useState } from "react";
 import twitter from "../../assets/twitter.png";
 import telegram from "../../assets/telegram.png";
 import LayoutContainer from "../layout/Layout";
-import { ethers } from "ethers";
 
-const Contract = ({ userBalance, contractBalance }) => {
-
-    const [walletDetail, setWalletDetail] = useState({
-        contract: 0,
-        wallet: 0,
-        beans: 0,
-        rewards: 0
-    });
+const Contract = ({ walletDetail }) => {
 
     const [value, setValue] = useState(0);
 
@@ -20,22 +12,22 @@ const Contract = ({ userBalance, contractBalance }) => {
         <div className="contract-card">
             <div className="contract-card-info">
                 <span>Contract</span>
-                <span>{contractBalance}</span>
+                <span>{walletDetail['contractBalance']}</span>
             </div>
             <div className="contract-card-info">
                 <span>Wallet</span>
-                <span>{userBalance} BNB</span>
+                <span>{walletDetail['userBalance']} BNB</span>
             </div>
             <div className="contract-card-info">
                 <span>Your Beans</span>
-                <span>{walletDetail['beans']}</span>
+                <span>{walletDetail['myGold']}</span>
             </div>
             <div className="contract-card-footer">
                 <span>Your Rewards</span>
-                <span>0 BNB</span>
+                <span>{walletDetail['myRewards']} BNB</span>
             </div>
             <div className="contract-card-footer">
-                <button disabled={!value} >Bury Gold</button>
+                <button disabled={!value}>Bury Gold</button>
                 <button disabled={!value}>Sell Gold</button>
             </div>
         </div>
@@ -81,10 +73,12 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
 
     const [animation, setAnimation] = useState([0, 1, 2, 3, 4, 5]);
     const [value, setValue] = useState(0);
-    const [contractBalance, setContractBalance] = useState(0);
-    const [userBalance, setUserBalance] = useState(0);
-    const [myRewards, setMyRewards] = useState(0);
-    const [myGold, setMyGold] = useState(0);
+    const [walletDetail, setWalletDetail] = useState({
+        contractBalance: 0,
+        userBalance: 0,
+        myGold: 0,
+        myRewards: 0
+    });
 
     const getDetailsByWeb3 = async () => {
         let web3 = new window.Web3(window.web3.currentProvider);
@@ -92,23 +86,21 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
 
         const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
-        const contractbalance = await web3.eth.getBalance(contractAddress) // contractbalance 10**18
-        setContractBalance(contractbalance / 10 ** 18);
+        const contractbalance = await web3.eth.getBalance(contractAddress); // contractbalance 10**18
+        setWalletDetail({...walletDetail,contractBalance:contractbalance / 10 ** 18});
 
-        const userBalance = await web3.eth.getBalance(accounts[0]) // userbalance
-        setUserBalance(userBalance / 10 ** 18);
+        const userBalance = await web3.eth.getBalance(accounts[0]); // userbalance
+        setWalletDetail({...walletDetail,userBalance:userBalance / 10 ** 18});
 
-        const myGold = await contract.methods.getMyMiners(accounts[0]).call() // your berans/gold
-        setMyGold(myGold)
+        const myGold = await contract.methods.getMyMiners(accounts[0]).call(); // your berans/gold
+        setWalletDetail({...walletDetail,myGold:myGold});
+
         try {
-            const myRewards = await contract.methods.NuggetRewards(accounts[0]).call()
-            setMyRewards(myRewards)
+            const myRewards = await contract.methods.NuggetRewards(accounts[0]).call();
+            setWalletDetail({...walletDetail,myRewards:myRewards});
         } catch (e) {
-            console.log(e);
-            setMyRewards(0)
+            setWalletDetail({...walletDetail,myRewards:0});
         }
-
-        console.log(contractbalance / 10 ** 18, userBalance / 10 ** 18, myGold);
     };
 
     useEffect(() => {
@@ -118,8 +110,7 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
         }
     }, [account]);
 
-    const onHireMiners = () => {
-
+    const onHireMiners = async () => {
     };
 
     return (
@@ -127,7 +118,7 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
             <div className="home-container">
                 {/* {animation.map((a,index)=><AnimationComponent key={index} index={index} />)} */}
                 <div className="home-container-row">
-                    <Contract contractBalance={contractBalance} userBalance={userBalance}></Contract>
+                    <Contract walletDetail={walletDetail}></Contract>
                     <div className="other-info-column" >
                         <div className="other-info-input-block">
                             <div className="contract-card-info-input">

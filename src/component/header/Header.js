@@ -6,8 +6,6 @@ const Header = ({ contractAbi, contractAddress,account,setAccount }) => {
 
     const [darkTheme, setDarkTheme] = useState(true);
 
-    console.log(account);
-
     useEffect(() => {
         const root = document.documentElement;
         root?.style.setProperty("--primary", darkTheme ? "#17161b" : "#ffffff");
