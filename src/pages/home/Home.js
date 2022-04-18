@@ -5,7 +5,7 @@ import telegram from "../../assets/telegram.png";
 import LayoutContainer from "../layout/Layout";
 import { ethers } from "ethers";
 
-const Contract = ({userBalance,contractBalance}) => {
+const Contract = ({ userBalance, contractBalance }) => {
 
     const [walletDetail, setWalletDetail] = useState({
         contract: 0,
@@ -24,7 +24,7 @@ const Contract = ({userBalance,contractBalance}) => {
             </div>
             <div className="contract-card-info">
                 <span>Wallet</span>
-                <span>{userBalance}</span>
+                <span>{userBalance} BNB</span>
             </div>
             <div className="contract-card-info">
                 <span>Your Beans</span>
@@ -81,70 +81,40 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
 
     const [animation, setAnimation] = useState([0, 1, 2, 3, 4, 5]);
     const [value, setValue] = useState(0);
-    const [contractBalance,setContractBalance] = useState(0);
-    const [userBalance,setUserBalance] = useState(0);
+    const [contractBalance, setContractBalance] = useState(0);
+    const [userBalance, setUserBalance] = useState(0);
+    const [myRewards, setMyRewards] = useState(0);
+    const [myGold, setMyGold] = useState(0);
 
-    const getDetails = async () => {
-        const { ethereum } = window;
-        // web3 = new Web3(window.web3.currentProvider);
-
-        if (ethereum) {
-            const provider = new ethers.providers.Web3Provider(ethereum);
-            const signer = provider.getSigner();
-            signer.getAddress().then((add) => {
-                console.log(add);
-                return provider.getBalance(add)
-            }).then((balance) => {
-                console.log(balance / 10 ** 18); // meta mask ballence
-            })
-            console.log(provider,'provider');
-            const contract = new ethers.Contract(contractAddress, contractAbi, provider);
-            console.log(contract,'contract');
-            const balance = await contract.getBalance();
-            setContractBalance(balance / 10 ** 18);
-            const myGold = await contract.getMyMiners(account) // your berans/gold
-            setUserBalance(myGold / 10 ** 18);
-            // const myRewards = await contract.NuggetRewards(account) // your berans/gold
-            // console.log(myRewards / 10 ** 18); // if error then show 0
-            console.log(ethers,'ether');
-            // const amount = ethers.utils().Web3.utils.toWei("0.01", "ether")
-            // await contract.methods.buyGold(account).send({ from: account, value: amount }) // buyGOld
-            // console.log(amount);
-            // const balanceUser = await contract.getBalance(account);
-        }
-        // let web3 = new Web3(window.web3.currentProvider);
-        // const accounts = await ethereum.enable();
-
-        // const contract = new web3.eth.Contract(contractAbi, contractAddress);
-
-        // const contractBalance = await web3.eth.getBalance(contractAddress) // contractbalance 10**18
-        // const balance = await web3.eth.getBalance(accounts[0]) // contractbalance 10**18
-
-        // console.log(contractBalance, balance);
-    };
-
-    const getDetailsByWeb3 =async () => {
+    const getDetailsByWeb3 = async () => {
         let web3 = new window.Web3(window.web3.currentProvider);
         const accounts = await window.ethereum.enable();
 
         const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
         const contractbalance = await web3.eth.getBalance(contractAddress) // contractbalance 10**18
+        setContractBalance(contractbalance / 10 ** 18);
 
         const userBalance = await web3.eth.getBalance(accounts[0]) // userbalance
+        setUserBalance(userBalance / 10 ** 18);
 
-        const myGold = await contract.methods.getMyMiners("0xb12d34ec804bf0d8872e42b924ca61a449a0f572").call() // your berans/gold
+        const myGold = await contract.methods.getMyMiners(accounts[0]).call() // your berans/gold
+        setMyGold(myGold)
+        try {
+            const myRewards = await contract.methods.NuggetRewards(accounts[0]).call()
+            setMyRewards(myRewards)
+        } catch (e) {
+            console.log(e);
+            setMyRewards(0)
+        }
 
-        const myRewards = await contract.methods.NuggetRewards("0xb12d34ec804bf0d8872e42b924ca61a449a0f572").call() // your berans/gold rewards
-
-        console.log(contractbalance/10**18,userBalance,myGold,myRewards);
+        console.log(contractbalance / 10 ** 18, userBalance / 10 ** 18, myGold);
     };
 
     useEffect(() => {
         if (account) {
-            getDetails();
-            if(window.web3 && window.ethereum)
-            getDetailsByWeb3();
+            if (window.web3 && window.ethereum)
+                getDetailsByWeb3();
         }
     }, [account]);
 
