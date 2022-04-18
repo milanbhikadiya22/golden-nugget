@@ -4,8 +4,31 @@ import twitter from "../../assets/twitter.png";
 import telegram from "../../assets/telegram.png";
 import LayoutContainer from "../layout/Layout";
 
-const Contract = ({ walletDetail }) => {
+const Contract = ({ walletDetail, contractAbi, contractAddress }) => {
 
+    const onBuryGold = async () => {
+        let web3 = new window.Web3(window.web3.currentProvider);
+        const accounts = await window.ethereum.enable();
+
+        const contract = new web3.eth.Contract(contractAbi, contractAddress);
+        const bury = await contract.methods.BuryGold(accounts[0]).send({ from: accounts[0] }) // buryGold
+        console.log(bury);
+        if (bury && bury.status) {
+
+        }
+    };
+    const onSellGold = async () => {
+        console.log('teste');
+        let web3 = new window.Web3(window.web3.currentProvider);
+        const accounts = await window.ethereum.enable();
+
+        const contract = new web3.eth.Contract(contractAbi, contractAddress);
+        const sell = await contract.methods.sellGold().send({ from: accounts[0] }) // sell
+        console.log(sell);
+        if (sell && sell.status) {
+
+        }
+    };
     const [value, setValue] = useState(0);
 
     return <div className="contract-container">
@@ -27,8 +50,8 @@ const Contract = ({ walletDetail }) => {
                 <span>{walletDetail['myRewards']} BNB</span>
             </div>
             <div className="contract-card-footer">
-                <button disabled={!value}>Bury Gold</button>
-                <button disabled={!value}>Sell Gold</button>
+                <button onClick={() => onBuryGold()}>Bury Gold</button>
+                <button onClick={() => onSellGold()}>Sell Gold</button>
             </div>
         </div>
     </div>
@@ -85,22 +108,26 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
         const accounts = await window.ethereum.enable();
 
         const contract = new web3.eth.Contract(contractAbi, contractAddress);
+        let walletDetail = {};
 
         const contractbalance = await web3.eth.getBalance(contractAddress); // contractbalance 10**18
-        setWalletDetail({...walletDetail,contractBalance:contractbalance / 10 ** 18});
+        walletDetail['contractBalance'] = (contractbalance / 10 ** 18).toFixed(3);
 
         const userBalance = await web3.eth.getBalance(accounts[0]); // userbalance
-        setWalletDetail({...walletDetail,userBalance:userBalance / 10 ** 18});
+        walletDetail['userBalance'] = (userBalance / 10 ** 18).toFixed(3);
 
         const myGold = await contract.methods.getMyMiners(accounts[0]).call(); // your berans/gold
-        setWalletDetail({...walletDetail,myGold:myGold});
+        console.log(myGold);
+        const fGold = parseFloat(myGold);
+        walletDetail['myGold'] = fGold.toFixed(3);
 
         try {
             const myRewards = await contract.methods.NuggetRewards(accounts[0]).call();
-            setWalletDetail({...walletDetail,myRewards:myRewards});
+            walletDetail['myRewards'] = (myRewards / 10 ** 18).toFixed(4);
         } catch (e) {
-            setWalletDetail({...walletDetail,myRewards:0});
+            walletDetail['myRewards'] = 0;
         }
+        setWalletDetail(walletDetail)
     };
 
     useEffect(() => {
@@ -111,6 +138,18 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
     }, [account]);
 
     const onHireMiners = async () => {
+        console.log('teste');
+        let web3 = new window.Web3(window.web3.currentProvider);
+        const accounts = await window.ethereum.enable();
+
+        const contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+        const amount = web3.utils.toWei(value.toString(), "ether")
+        console.log(amount);
+        const afterAdd = await contract.methods.buyGold(accounts[0]).send({ from: accounts[0], value: amount }) // buyGOld
+        if (afterAdd && afterAdd.status) {
+            getDetailsByWeb3()
+        }
     };
 
     return (
@@ -118,12 +157,12 @@ const Home = ({ contractAbi, contractAddress, account, setAccount }) => {
             <div className="home-container">
                 {/* {animation.map((a,index)=><AnimationComponent key={index} index={index} />)} */}
                 <div className="home-container-row">
-                    <Contract walletDetail={walletDetail}></Contract>
+                    <Contract walletDetail={walletDetail} contractAbi={contractAbi} contractAddress={contractAddress}></Contract>
                     <div className="other-info-column" >
                         <div className="other-info-input-block">
                             <div className="contract-card-info-input">
                                 <input type="text" value={value} onChange={(e) => {
-                                    if (!e.target.value || e.target.value.match(/^[0-9\s]+$/))
+                                    if (!e.target.value || e.target.value.match(/^-?\d*\.?\d*$/))
                                         setValue(e.target.value);
                                 }} />
                                 <span>BNB</span>
